@@ -1,0 +1,243 @@
+fus@hq:~/toshiba/STM32/BLINK/rr-blink/debug$ ./GDB.sh 
+GNU gdb (7.10-1ubuntu3+9) 7.10
+Copyright (C) 2015 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "--host=x86_64-linux-gnu --target=arm-none-eabi".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from ../bin/blink.elf...done.
+Remote debugging using localhost:3333
+0x00000000 in ?? ()
+(gdb) bt
+#0  0x00000000 in ?? ()
+(gdb) b main
+Breakpoint 1 at 0x800035e: file src/main.c, line 12.
+(gdb) c
+Continuing.
+Note: automatically using hardware breakpoints for read-only addresses.
+
+Breakpoint 1, main () at src/main.c:12
+12          RCC->APB2ENR |= RCC_APB2ENR_IOPBEN;
+(gdb) b main.c:24
+Breakpoint 2 at 0x8000394: file src/main.c, line 24.
+(gdb) c
+Continuing.
+
+Breakpoint 2, main () at src/main.c:24
+24              for (uint32_t i = 0; i != 10000; i++) { }
+(gdb) info registers
+r0             0x20000438       536871992
+r1             0x0      0
+r2             0x10000  65536
+r3             0x40010c00       1073810432
+r4             0xb68    2920
+r5             0x8      8
+r6             0x4c11db7        79764919
+r7             0x20004fec       536891372
+r8             0xfffbff4e       -262322
+r9             0x3fffecdd       1073736925
+r10            0x4402b05e       1141026910
+r11            0xd649e3fb       -699800581
+r12            0x4bdffffb       1272971259
+sp             0x20004fec       0x20004fec
+lr             0x80003fb        134218747
+pc             0x8000394        0x8000394 <main+60>
+xPSR           0x61000000       1627389952
+(gdb) disassemble
+Dump of assembler code for function main:
+   0x08000358 <+0>:     push    {r7}
+   0x0800035a <+2>:     sub     sp, #12
+   0x0800035c <+4>:     add     r7, sp, #0
+   0x0800035e <+6>:     ldr     r2, [pc, #76]   ; (0x80003ac <main+84>)
+   0x08000360 <+8>:     ldr     r3, [pc, #72]   ; (0x80003ac <main+84>)
+   0x08000362 <+10>:    ldr     r3, [r3, #24]
+   0x08000364 <+12>:    orr.w   r3, r3, #8
+   0x08000368 <+16>:    str     r3, [r2, #24]
+   0x0800036a <+18>:    ldr     r3, [pc, #68]   ; (0x80003b0 <main+88>)
+   0x0800036c <+20>:    movs    r2, #3
+   0x0800036e <+22>:    str     r2, [r3, #0]
+   0x08000370 <+24>:    ldr     r3, [pc, #60]   ; (0x80003b0 <main+88>)
+   0x08000372 <+26>:    movs    r2, #1
+   0x08000374 <+28>:    str     r2, [r3, #16]
+   0x08000376 <+30>:    movs    r3, #0
+   0x08000378 <+32>:    str     r3, [r7, #4]
+   0x0800037a <+34>:    b.n     0x8000382 <main+42>
+   0x0800037c <+36>:    ldr     r3, [r7, #4]
+   0x0800037e <+38>:    adds    r3, #1
+   0x08000380 <+40>:    str     r3, [r7, #4]
+   0x08000382 <+42>:    ldr     r3, [r7, #4]
+   0x08000384 <+44>:    movw    r2, #10000      ; 0x2710
+   0x08000388 <+48>:    cmp     r3, r2
+   0x0800038a <+50>:    bne.n   0x800037c <main+36>
+   0x0800038c <+52>:    ldr     r3, [pc, #32]   ; (0x80003b0 <main+88>)
+   0x0800038e <+54>:    mov.w   r2, #65536      ; 0x10000
+   0x08000392 <+58>:    str     r2, [r3, #16]
+=> 0x08000394 <+60>:    movs    r3, #0
+   0x08000396 <+62>:    str     r3, [r7, #0]
+   0x08000398 <+64>:    b.n     0x80003a0 <main+72>
+   0x0800039a <+66>:    ldr     r3, [r7, #0]
+   0x0800039c <+68>:    adds    r3, #1
+   0x0800039e <+70>:    str     r3, [r7, #0]
+   0x080003a0 <+72>:    ldr     r3, [r7, #0]
+   0x080003a2 <+74>:    movw    r2, #10000      ; 0x2710
+   0x080003a6 <+78>:    cmp     r3, r2
+   0x080003a8 <+80>:    bne.n   0x800039a <main+66>
+   0x080003aa <+82>:    b.n     0x8000370 <main+24>
+---Type <return> to continue, or q <return> to quit---q 
+Quit
+(gdb) b 0x800037c
+Function "0x800037c" not defined.
+Make breakpoint pending on future shared library load? (y or [n]) n
+(gdb) b *0x800037c
+Breakpoint 3 at 0x800037c: file src/main.c, line 21.
+(gdb) c
+Continuing.
+
+Breakpoint 1, main () at src/main.c:12
+12          RCC->APB2ENR |= RCC_APB2ENR_IOPBEN;
+(gdb) c
+Continuing.
+
+Breakpoint 3, 0x0800037c in main () at src/main.c:21
+21              for (uint32_t i = 0; i != 10000; i++) { }
+(gdb) disassemble
+Dump of assembler code for function main:
+   0x08000358 <+0>:     push    {r7}
+   0x0800035a <+2>:     sub     sp, #12
+   0x0800035c <+4>:     add     r7, sp, #0
+   0x0800035e <+6>:     ldr     r2, [pc, #76]   ; (0x80003ac <main+84>)
+   0x08000360 <+8>:     ldr     r3, [pc, #72]   ; (0x80003ac <main+84>)
+   0x08000362 <+10>:    ldr     r3, [r3, #24]
+   0x08000364 <+12>:    orr.w   r3, r3, #8
+   0x08000368 <+16>:    str     r3, [r2, #24]
+   0x0800036a <+18>:    ldr     r3, [pc, #68]   ; (0x80003b0 <main+88>)
+   0x0800036c <+20>:    movs    r2, #3
+   0x0800036e <+22>:    str     r2, [r3, #0]
+   0x08000370 <+24>:    ldr     r3, [pc, #60]   ; (0x80003b0 <main+88>)
+   0x08000372 <+26>:    movs    r2, #1
+   0x08000374 <+28>:    str     r2, [r3, #16]
+   0x08000376 <+30>:    movs    r3, #0
+   0x08000378 <+32>:    str     r3, [r7, #4]
+   0x0800037a <+34>:    b.n     0x8000382 <main+42>
+=> 0x0800037c <+36>:    ldr     r3, [r7, #4]
+   0x0800037e <+38>:    adds    r3, #1
+   0x08000380 <+40>:    str     r3, [r7, #4]
+   0x08000382 <+42>:    ldr     r3, [r7, #4]
+   0x08000384 <+44>:    movw    r2, #10000      ; 0x2710
+   0x08000388 <+48>:    cmp     r3, r2
+   0x0800038a <+50>:    bne.n   0x800037c <main+36>
+   0x0800038c <+52>:    ldr     r3, [pc, #32]   ; (0x80003b0 <main+88>)
+   0x0800038e <+54>:    mov.w   r2, #65536      ; 0x10000
+   0x08000392 <+58>:    str     r2, [r3, #16]
+   0x08000394 <+60>:    movs    r3, #0
+   0x08000396 <+62>:    str     r3, [r7, #0]
+   0x08000398 <+64>:    b.n     0x80003a0 <main+72>
+   0x0800039a <+66>:    ldr     r3, [r7, #0]
+   0x0800039c <+68>:    adds    r3, #1
+   0x0800039e <+70>:    str     r3, [r7, #0]
+   0x080003a0 <+72>:    ldr     r3, [r7, #0]
+   0x080003a2 <+74>:    movw    r2, #10000      ; 0x2710
+   0x080003a6 <+78>:    cmp     r3, r2
+   0x080003a8 <+80>:    bne.n   0x800039a <main+66>
+   0x080003aa <+82>:    b.n     0x8000370 <main+24>
+---Type <return> to continue, or q <return> to quit---q
+Quit
+(gdb) b 0x0800038c
+Function "0x0800038c" not defined.
+Make breakpoint pending on future shared library load? (y or [n]) Quit
+(gdb) b *0x0800038c
+Breakpoint 4 at 0x800038c: file src/main.c, line 23.
+(gdb) c
+Continuing.
+
+Breakpoint 3, 0x0800037c in main () at src/main.c:21
+21              for (uint32_t i = 0; i != 10000; i++) { }
+(gdb) info registers
+r0             0x20000438       536871992
+r1             0x0      0
+r2             0x2710   10000
+r3             0x1      1
+r4             0xb68    2920
+r5             0x8      8
+r6             0x4c11db7        79764919
+r7             0x20004fec       536891372
+r8             0xfffbff4e       -262322
+r9             0x3fffecdd       1073736925
+r10            0x4402b05e       1141026910
+r11            0xd649e3fb       -699800581
+r12            0x4bdffffb       1272971259
+sp             0x20004fec       0x20004fec
+lr             0x80003fb        134218747
+pc             0x800037c        0x800037c <main+36>
+xPSR           0x81000000       -2130706432
+(gdb) c
+Continuing.
+
+Breakpoint 3, 0x0800037c in main () at src/main.c:21
+21              for (uint32_t i = 0; i != 10000; i++) { }
+(gdb) info registers
+r0             0x20000438       536871992
+r1             0x0      0
+r2             0x2710   10000
+r3             0x2      2
+r4             0xb68    2920
+r5             0x8      8
+r6             0x4c11db7        79764919
+r7             0x20004fec       536891372
+r8             0xfffbff4e       -262322
+r9             0x3fffecdd       1073736925
+r10            0x4402b05e       1141026910
+r11            0xd649e3fb       -699800581
+r12            0x4bdffffb       1272971259
+sp             0x20004fec       0x20004fec
+lr             0x80003fb        134218747
+pc             0x800037c        0x800037c <main+36>
+xPSR           0x81000000       -2130706432
+(gdb) c
+Continuing.
+
+Breakpoint 3, 0x0800037c in main () at src/main.c:21
+21              for (uint32_t i = 0; i != 10000; i++) { }
+(gdb) info registers ; c
+Invalid register `;'
+(gdb) info registers  c
+Invalid register `c'
+(gdb) info registers 
+r0             0x20000438       536871992
+r1             0x0      0
+r2             0x2710   10000
+r3             0x3      3
+r4             0xb68    2920
+r5             0x8      8
+r6             0x4c11db7        79764919
+r7             0x20004fec       536891372
+r8             0xfffbff4e       -262322
+r9             0x3fffecdd       1073736925
+r10            0x4402b05e       1141026910
+r11            0xd649e3fb       -699800581
+r12            0x4bdffffb       1272971259
+sp             0x20004fec       0x20004fec
+lr             0x80003fb        134218747
+pc             0x800037c        0x800037c <main+36>
+xPSR           0x81000000       -2130706432
+(gdb) info registers r2 r3
+r2             0x2710   10000
+r3             0x3      3
+(gdb) c
+Continuing.
+
+Breakpoint 3, 0x0800037c in main () at src/main.c:21
+21              for (uint32_t i = 0; i != 10000; i++) { }
+(gdb) info registers r2 r3
+r2             0x2710   10000
+r3             0x4      4
+(gdb) 
+
